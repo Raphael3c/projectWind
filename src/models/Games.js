@@ -8,7 +8,7 @@ const GameSchema = new Schema({
     otherTitles: [String],
     developers: [String],
     publishers: [String],
-    genrers: [String],
+    genres: [String],
     firstRelease: Date,
     japanRelease: Date,
     usaRelease: Date,
@@ -16,8 +16,6 @@ const GameSchema = new Schema({
 }, {collection: 'games', strict: false});
 
 const Game = model('Game', GameSchema);
-
-
 
 module.exports = {
     find: (criteria) => {
@@ -49,4 +47,17 @@ module.exports = {
 
         return query.exec();
     },
+
+    store: (data) => {
+        const game = new Game(data);
+        return game.save();
+    },
+
+    update: (id, data, options = { new: true }) => {
+        return Game.findOneAndUpdate({_id: id}, data, options);
+    },
+
+    destroy: (id) => {
+        return Game.deleteOne({_id: id});
+    }
 }
